@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-using ClientsMVVM.MVVM;
 
 namespace ClientsMVVM.Model
 {
@@ -16,6 +11,7 @@ namespace ClientsMVVM.Model
         private string lastName;
         private DateTime birthday;
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name
         {
@@ -51,20 +47,6 @@ namespace ClientsMVVM.Model
             set
             {
                 birthday = value;
-                OnPropertyChanged();
-            }
-        }
-
-        bool changeclient = false;
-        public bool ChangeClient
-        {
-            get
-            {
-                return changeclient;
-            }
-            set
-            {
-                changeclient = value;
                 OnPropertyChanged();
             }
         }

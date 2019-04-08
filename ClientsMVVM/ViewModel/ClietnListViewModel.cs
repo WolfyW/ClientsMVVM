@@ -1,15 +1,12 @@
-﻿using System;
+﻿using ClientsMVVM.Model;
+using ClientsMVVM.MVVM;
+using ClientsMVVM.View;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-using ClientsMVVM.Model;
-using ClientsMVVM.MVVM;
-using ClientsMVVM.View;
 
 namespace ClientsMVVM.ViewModel
 {
@@ -20,13 +17,12 @@ namespace ClientsMVVM.ViewModel
 
         public ClietnListViewModel()
         {
-            clients = new ObservableCollection<Client>()
+            clients = new ObservableCollection<Client>();
+            List<Client> clientList = CRUDOperation.GetClients();
+            foreach (var cl in clientList)
             {
-                new Client() {Name = "Jhon", LastName = "Green", Birthday = DateTime.Parse("1987, 3, 24") },
-                new Client() {Name = "Klerk", LastName = "Treens", Birthday = DateTime.Parse("1976, 3, 21")},
-                new Client() {Name = "Sam", LastName = "Miltor", Birthday =   DateTime.Parse("1995, 8, 11")},
-                new Client() {Name = "Mily", LastName = "Near", Birthday =    DateTime.Parse("1987, 3, 24")}
-            };
+                clients.Add(cl);
+            }
         }
 
         public ObservableCollection<Client> Clients
@@ -50,8 +46,6 @@ namespace ClientsMVVM.ViewModel
             }
             set
             {
-                if (selectedClient != null)
-                    selectedClient.ChangeClient = false; // Если изменяли клиента, то изменяем состояние обратно на закрытое
                 selectedClient = value;
                 OnPropertyChanged();
             }
@@ -60,6 +54,13 @@ namespace ClientsMVVM.ViewModel
         public void AddClient(Client client)
         {
             Clients.Add(client);
+            CRUDOperation.AddClient(client);
+        }
+
+        public void ChangeClient()
+        {
+            CRUDOperation.Updateclient();
+            OnPropertyChanged("Clients");
         }
 
         private RelayCommand deleteCommand;
@@ -70,7 +71,10 @@ namespace ClientsMVVM.ViewModel
                 return deleteCommand ?? (deleteCommand = new RelayCommand(obj =>
                 {
                     if (selectedClient != null)
+                    {
+                        CRUDOperation.RemoveClient(selectedClient);
                         Clients.Remove(selectedClient);
+                    }
                 }
                 ));
             }
@@ -84,7 +88,10 @@ namespace ClientsMVVM.ViewModel
                 return changeCommand ?? (changeCommand = new RelayCommand(obj =>
                 {
                     if (selectedClient != null)
-                        selectedClient.ChangeClient = !selectedClient.ChangeClient;
+                    {
+                        AddChangeClient add = new AddChangeClient(ChangeClient, selectedClient);
+                        add.ShowDialog();
+                    }
                 }));
             }
         }
@@ -96,7 +103,7 @@ namespace ClientsMVVM.ViewModel
             {
                 return addCommand ?? (addCommand = new RelayCommand(obj =>
                 {
-                    AddClient add = new AddClient(AddClient);
+                    AddChangeClient add = new AddChangeClient(AddClient);
                     add.ShowDialog();
                 }));
             }

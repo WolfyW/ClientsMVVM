@@ -1,34 +1,52 @@
 ﻿using ClientsMVVM.Model;
 using ClientsMVVM.MVVM;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ClientsMVVM.ViewModel
 {
     public delegate void AddClientDelegate(Client client);
+    public delegate void ChangeClientDelegate();
 
-    class AddClientViewModel : INotifyPropertyChanged
+
+    class AddChangeClientViewModel : INotifyPropertyChanged
     {
         private Client client;
-        AddClientDelegate addClientDelegate;
+        private AddClientDelegate addClientDelegate;
+        private ChangeClientDelegate changeClientDelegate;
+        private bool isAdd;
 
-        public AddClientViewModel()
+        public AddChangeClientViewModel()
         {
             client = new Client();
         }
 
-        public AddClientViewModel(AddClientDelegate addClient)
+        public AddChangeClientViewModel(AddClientDelegate addClient)
         {
             client = new Client();
             client.Birthday = DateTime.Now;
-            client.ChangeClient = true;
             addClientDelegate += addClient;
+            isAdd = true;
+        }
+
+        public AddChangeClientViewModel(ChangeClientDelegate ChangeClient, Client client)
+        {
+            changeClientDelegate += ChangeClient;
+            isAdd = false;
+            this.client = client;
+        }
+
+        public string TypeAction
+        {
+            get
+            {
+                if (isAdd)
+                    return "Добавить";
+                else
+                    return "Изменить";
+            }
         }
 
         public string Name
@@ -68,18 +86,26 @@ namespace ClientsMVVM.ViewModel
             }
         }
 
-
         private RelayCommand addCommand;
         public RelayCommand AddCommand
         {
             get
             {
-                return addCommand ?? (addCommand = new RelayCommand(obj =>
+                if (isAdd)
+                    return addCommand ?? (addCommand = new RelayCommand(obj =>
+                    {
+                        addClientDelegate(client);
+                        ((Window)obj).Close();
+                    }));
+                else
                 {
-                    addClientDelegate(client);
-                    client.ChangeClient = false;
-                    ((Window)obj).Close();
-                }));
+                    return addCommand ?? (addCommand = new RelayCommand(obj =>
+                    {
+                        changeClientDelegate();
+                        ((Window)obj).Close();
+                    }
+                    ));
+                }
             }
         }
 

@@ -48,7 +48,7 @@
         </ListBox>
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
-            <view:ClientDetailView DataContext="{Binding SelectedClient}"/>
+            <view:ClientDetailView DataContext="{Binding SelectedClient}" IsEnabled="False"/>
             <StackPanel Orientation="Horizontal">
                 <Button HorizontalAlignment="Left" Margin="0,10,0,0" Width="120" Height=" 30" Content="Изменить" Command="{Binding ChangeCommand}"/>
                 <Button HorizontalAlignment="Left" Margin="10,10,0,0" Width="120" Height=" 30" Content="Удалить" Command="{Binding DeleteCommand}"/>

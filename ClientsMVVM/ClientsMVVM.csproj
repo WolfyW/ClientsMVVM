@@ -62,9 +62,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\AddClientViewModel.cs" />
-    <Compile Include="View\AddClient.xaml.cs">
-      <DependentUpon>AddClient.xaml</DependentUpon>
+    <Compile Include="ClientContext.cs" />
+    <Compile Include="CRUDOperation.cs" />
+    <Compile Include="ViewModel\AddChangeClientViewModel.cs" />
+    <Compile Include="View\AddChangeClient.xaml.cs">
+      <DependentUpon>AddChangeClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ClientDetailView.xaml.cs">
       <DependentUpon>ClientDetailView.xaml</DependentUpon>
@@ -81,7 +83,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\AddClient.xaml">
+    <Page Include="View\AddChangeClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
