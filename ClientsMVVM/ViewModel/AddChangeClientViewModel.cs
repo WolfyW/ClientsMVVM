@@ -58,7 +58,6 @@ namespace ClientsMVVM.ViewModel
             set
             {
                 client.Name = value;
-                OnPropertyChanged();
             }
         }
         public string LastName
@@ -70,7 +69,6 @@ namespace ClientsMVVM.ViewModel
             set
             {
                 client.LastName = value;
-                OnPropertyChanged();
             }
         }
         public DateTime Birthday
@@ -82,7 +80,6 @@ namespace ClientsMVVM.ViewModel
             set
             {
                 client.Birthday = value;
-                OnPropertyChanged("Birthday");
             }
         }
 
