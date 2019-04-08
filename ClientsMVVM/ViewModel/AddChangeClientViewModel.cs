@@ -82,7 +82,7 @@ namespace ClientsMVVM.ViewModel
             set
             {
                 client.Birthday = value;
-                OnPropertyChanged();
+                OnPropertyChanged("Birthday");
             }
         }
 
